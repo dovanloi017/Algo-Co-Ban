@@ -13,21 +13,3 @@ public static List<T> BuildListFromString<T>(string values, char split = '|')
         }
         return list;
     }
-  public static void CheckDisconnection(MonoBehaviour behaviour, Action onDisconnected)
-    {
-        behaviour.StartCoroutine(ConnectUrl("http://www.google.com", onDisconnected));
-    }
- private static IEnumerator ConnectUrl(string url, Action onDisconnected)
-    {
-        WWW www = new WWW(url);
-        yield return www;
-        if (www.error != null)
-        {
-            yield return new WaitForSeconds(2f);
-            www = new WWW(url);
-            yield return www;
-
-            if (www.error != null)
-                onDisconnected();
-        }
-    }
