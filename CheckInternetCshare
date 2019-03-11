@@ -1,0 +1,32 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public class ManagerInternet : MonoBehaviour{
+    public static ManagerInternet share;
+    private void Awake(){
+        share = this;
+    }
+    void Start(){
+        Debug.Log("trang thai internet= " + InternetIsOk());
+    }
+    public bool InternetIsOk(){
+        bool res = false;
+        StartCoroutine(checkInternetConnection((isConnected) =>{
+            res = true;
+            Debug.Log("internet is ok");
+        }));
+        return res;
+    }
+    IEnumerator checkInternetConnection(Action<bool> action){
+        WWW www = new WWW("http://google.com");
+        yield return www;
+        if (www.error != null){
+            action(false);
+        }
+        else{
+            action(true);
+        }
+    }
+}
